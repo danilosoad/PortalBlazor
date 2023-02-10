@@ -1,0 +1,32 @@
+﻿@page "/user/create"
+@using PortalBlazor.Domain.Entity;
+@inject HttpClient http;
+@inject NavigationManager navigation;
+<h3>Novo Usuario @user.Name</h3>
+
+
+
+
+<MudGrid>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField @bind-Value="@user.Name" Label="Name" Variant="Variant.Text"></MudTextField>
+
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField @bind-Value="@user.Id" Label="ID Number" Variant="Variant.Text"></MudTextField>
+    </MudItem>
+</MudGrid>
+<br />
+
+
+<MudButton @onclick="CreateUserRequest" Size="Size.Small" Variant="Variant.Filled">Save</MudButton>
+
+@code {
+    User user = new User();
+
+    private async void CreateUserRequest()
+    {
+        await http.PostAsJsonAsync("api/users", user);
+        navigation.NavigateTo("/users");
+    }
+}

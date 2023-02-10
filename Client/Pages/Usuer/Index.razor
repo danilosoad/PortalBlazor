@@ -1,0 +1,38 @@
+﻿@page "/users"
+@using PortalBlazor.Domain.Entity;
+@inject HttpClient http
+
+<h3>Index</h3>
+<MudTable @ref="_table" T="User" Items="@Elements" Hover="true" MultiSelection="true" Breakpoint="Breakpoint.Sm" Loading="@_loading" LoadingProgressColor="Color.Info" @bind-SelectedItems="selectedItems"
+          OnRowClick="@OnRowClick" @bind-SelectOnRowClick="@_selectOnRowClick">
+    <HeaderContent>
+        <MudTh>ID</MudTh>
+        <MudTh>Name</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+    </RowTemplate>
+</MudTable>
+
+<MudSwitch @bind-Checked="_hidePosition">Hide <b>position</b> when Breakpoint=Xs</MudSwitch>
+<MudSwitch @bind-Checked="_loading">Show Loading</MudSwitch>
+
+@code {
+    private bool _hidePosition;
+    private bool _loading;
+    private IEnumerable<User> Elements = new List<User>();
+    private bool _selectOnRowClick = true;
+    private MudTable<User>? _table;
+    private HashSet<User> selectedItems = new HashSet<User>();
+    private string _selectedItemText = "No row clicked";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Elements = await http.GetFromJsonAsync<List<User>>("api/users");
+    }
+    private void OnRowClick(TableRowClickEventArgs<User> args)
+    {
+        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+    }
+}

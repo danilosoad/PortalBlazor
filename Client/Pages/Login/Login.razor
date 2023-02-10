@@ -1,0 +1,55 @@
+﻿@page "/login"
+@using PortalBlazor.Server.Util.Token;
+@using PortalBlazor.Shared.Models;
+@inject HttpClient http
+@inject NavigationManager navigation
+@inject AuthStateProvider authStateProvider
+
+
+<h3>Login</h3>
+
+<MudCard>
+    <MudCardContent>
+
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="@userInfo.Email" Label="Email" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="@userInfo.Password" InputType="InputType.Password" Label="Password" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton @onclick="LoginRequest" Size="Size.Small" Variant="Variant.Filled">Login</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    private UserInfo userInfo = new UserInfo();
+    bool loginFailed = false;
+
+
+
+    private async Task LoginRequest()
+    {
+        var token = await http.PostAsJsonAsync("api/login/login", userInfo);
+
+        var loginAsJson = JsonSerializer.Serialize(userInfo);
+
+        var response = await http.PostAsync("api/login/login", new StringContent(loginAsJson, Encoding.UTF8, "application/json"));
+
+        if (response.IsSuccessStatusCode)
+        {
+            var responseAsString = await response.Content.ReadAsStringAsync();
+            var loginResult = JsonSerializer.Deserialize<UserToken>(responseAsString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+
+            await authStateProvider.Login(loginResult.Token);
+            navigation.NavigateTo("/");
+        }
+        else
+        {
+            loginFailed = true;
+            Console.WriteLine($"login falhou", response.StatusCode);
+        }
+    }
+}
