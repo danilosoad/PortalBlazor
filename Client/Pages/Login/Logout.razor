@@ -1,0 +1,22 @@
+﻿@page "/logout"
+@inject NavigationManager navigation
+@inject AuthStateProvider authStateProvider
+<h3>Logout</h3>
+
+@code {
+    private bool IsVisible = false;
+
+    protected async override Task OnInitializedAsync()
+    {
+        try
+        {
+            await authStateProvider.Logout();
+            navigation.NavigateTo("/");
+        }
+        catch (Exception)
+        {
+            IsVisible = true;
+            throw;
+        }
+    }
+}

@@ -4,13 +4,13 @@ using Microsoft.IdentityModel.Tokens;
 
 //using Microsoft.IdentityModel.Tokens;
 using PortalBlazor.Server.Util.Token;
+using PortalBlazor.Shared.Enum;
 using PortalBlazor.Shared.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 //using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace PortalBlazor.Server.Controllers
 {
@@ -43,7 +43,14 @@ namespace PortalBlazor.Server.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
-                return Ok(GenerateToken(model));
+            {
+                if (model.Role == (int)RoleEnum.Admin)
+                    await _userManager.AddToRoleAsync(user, "Admin");
+                else
+                    await _userManager.AddToRoleAsync(user, "User");
+
+                return Ok(await GenerateToken(model));
+            }
             else
                 return BadRequest(new { message = "invalid credentials" });
         }
@@ -54,19 +61,30 @@ namespace PortalBlazor.Server.Controllers
             var result = await _sigInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
 
             if (result.Succeeded)
-                return Ok(GenerateToken(model));
+                return Ok(await GenerateToken(model));
             else
                 return BadRequest(new { message = "invalid credentials" });
         }
 
-        private UserToken GenerateToken(UserInfo model)
+        private async Task<UserToken> GenerateToken(UserInfo model)
         {
-            var claims = new List<Claim>() {
-                new Claim(JwtRegisteredClaimNames.UniqueName, model.Email),
-                new Claim(ClaimTypes.Name, model.Email),
-                new Claim(ClaimTypes.Role, "user"),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+            //var claims = new List<Claim>() {
+            //    new Claim(JwtRegisteredClaimNames.UniqueName, model.Email),
+            //    new Claim(ClaimTypes.Name, model.Email),
+            //    new Claim(ClaimTypes.Role, model.Role),
+            //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            //};
+
+            var user = await _sigInManager.UserManager.FindByEmailAsync(model.Email);
+            var roles = await _sigInManager.UserManager.GetRolesAsync(user);
+            var claims = new List<Claim>();
+
+            claims.Add(new Claim(ClaimTypes.Name, user.Email));
+
+            foreach (var item in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, item));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JwtKey").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

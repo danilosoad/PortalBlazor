@@ -1,19 +1,25 @@
 ﻿@page "/user/create"
 @using PortalBlazor.Domain.Entity;
+@using PortalBlazor.Shared.Enum;
+@using PortalBlazor.Shared.Models;
 @inject HttpClient http;
 @inject NavigationManager navigation;
-<h3>Novo Usuario @user.Name</h3>
-
-
+<h3>New User</h3>
 
 
 <MudGrid>
     <MudItem xs="12" sm="6" md="4">
-        <MudTextField @bind-Value="@user.Name" Label="Name" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="@userInfo.Email" Label="Email" Variant="Variant.Text"></MudTextField>
 
     </MudItem>
     <MudItem xs="12" sm="6" md="4">
-        <MudTextField @bind-Value="@user.Id" Label="ID Number" Variant="Variant.Text"></MudTextField>
+        <MudTextField @bind-Value="@userInfo.Password" InputType="InputType.Password" Label="Password" Variant="Variant.Text"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudSelect Margin="Margin.None" T="int" Label="Role" AnchorOrigin="Origin.BottomCenter" @bind-Value="userInfo.Role">
+            <MudSelectItem Value="@((int)RoleEnum.Admin)">Admin</MudSelectItem>
+            <MudSelectItem Value="@((int)RoleEnum.User)">User</MudSelectItem>
+        </MudSelect>
     </MudItem>
 </MudGrid>
 <br />
@@ -22,11 +28,11 @@
 <MudButton @onclick="CreateUserRequest" Size="Size.Small" Variant="Variant.Filled">Save</MudButton>
 
 @code {
-    User user = new User();
+    UserInfo userInfo = new UserInfo();
 
     private async void CreateUserRequest()
     {
-        await http.PostAsJsonAsync("api/users", user);
-        navigation.NavigateTo("/users");
+        await http.PostAsJsonAsync("api/login/register", userInfo);
+        navigation.NavigateTo("/");
     }
 }

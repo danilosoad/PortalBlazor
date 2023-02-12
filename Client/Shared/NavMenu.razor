@@ -1,16 +1,14 @@
 ﻿<MudNavMenu>
-    <AuthorizeView Roles="user">
+    <AuthorizeView Roles="User">
         <MudNavLink Icon="@Icons.Material.Rounded.Home" Href="/">Home</MudNavLink>
     </AuthorizeView>
-    <AuthorizeView Roles="admin,user">
-        <MudNavGroup Icon="@Icons.Material.Rounded.Person" Title="Users" Expanded="false">
-            <MudNavLink Icon="@Icons.Material.Rounded.Search" Href="/users">Search User</MudNavLink>
-            <MudNavLink Icon="@Icons.Material.Rounded.PersonAdd" Href="/user/create">Create User</MudNavLink>
-        </MudNavGroup>
-    </AuthorizeView>
-
-    <AuthorizeView Roles="admin">
+    <AuthorizeView Roles="Admin">
         <Authorized>
+            <MudNavGroup Icon="@Icons.Material.Rounded.Person" Title="Users" Expanded="false">
+                <MudNavLink Icon="@Icons.Material.Rounded.Search" Href="/users">Search User</MudNavLink>
+                <MudNavLink Icon="@Icons.Material.Rounded.PersonAdd" Href="/user/create">Create User</MudNavLink>
+            </MudNavGroup>
+
             <MudNavGroup Icon="@Icons.Material.Rounded.Settings" Title="Settings" Expanded="false">
                 <MudNavLink Icon="@Icons.Material.Rounded.SettingsApplications" Href="/createroles">Roles</MudNavLink>
             </MudNavGroup>

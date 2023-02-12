@@ -9,6 +9,9 @@
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
         <MudSwitch @bind-Checked="@_isDarkMode" Color="Color.Primary" Class="ma-4" T="bool" Label=@Mode() />
+        <AuthorizeView>
+            <a style="color:white" href="Logout">Logout</a>
+        </AuthorizeView>
     </MudAppBar>
     <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
         <MudNavMenu>
@@ -35,5 +38,18 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await authState;
+        var user = state.User;
+
+        if (!user.Identity.IsAuthenticated)
+            _drawerOpen = false;
+
     }
 }
