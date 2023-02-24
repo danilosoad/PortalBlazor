@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\PortalBlazor.Domain\PortalBlazor.Domain.csproj" />
-    <ProjectReference Include="..\Shared\PortalBlazor.Shared.csproj" />
+    <ProjectReference Include="..\PortalBlazor.Core\PortalBlazor.Core.csproj" />
   </ItemGroup>
 
 </Project>

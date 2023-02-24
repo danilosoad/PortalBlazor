@@ -1,4 +1,4 @@
-﻿namespace PortalBlazor.Shared.Models
+﻿namespace PortalBlazor.Core.Models
 {
     public class UserInfo
     {

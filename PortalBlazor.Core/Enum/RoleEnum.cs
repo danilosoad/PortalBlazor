@@ -1,4 +1,4 @@
-﻿namespace PortalBlazor.Shared.Enum
+﻿namespace PortalBlazor.Core.Enum
 {
     public enum RoleEnum
     {

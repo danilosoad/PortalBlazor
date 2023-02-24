@@ -1,7 +1,7 @@
 ﻿@page "/createroles"
 @*@attribute [Authorize(Roles = "admin")]*@
 @using System.Net.Http.Json
-@using PortalBlazor.Domain.Entity;
+
 @inject HttpClient httpClient
 
 <MudTable ServerData="@(new Func<TableState, Task<TableData<User>>>(ServerReload))"
@@ -18,7 +18,7 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="Id">@context.Id</MudTd>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Name">@context.UserName</MudTd>
     </RowTemplate>
     <NoRecordsContent>
         <MudText>No matching records found</MudText>
@@ -51,7 +51,7 @@
                 return true;
             //if (element.Sign.Contains(searchString, StringComparison.OrdinalIgnoreCase))
             //    return true;
-            if (element.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            if (element.UserName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                 return true;
             //if ($"{element.Number} {element.Position} {element.Molar}".Contains(searchString))
             //    return true;
@@ -67,7 +67,7 @@
             //    data = data.OrderByDirection(state.SortDirection, o => o.Sign);
             //    break;
             case "name_field":
-                data = data.OrderByDirection(state.SortDirection, o => o.Name);
+                data = data.OrderByDirection(state.SortDirection, o => o.UserName);
                 break;
                 //case "position_field":
                 //    data = data.OrderByDirection(state.SortDirection, o => o.Position);

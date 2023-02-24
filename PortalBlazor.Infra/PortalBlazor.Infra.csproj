@@ -2,27 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <SupportedPlatform Include="browser" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resource\AppResource.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AppResource.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resource\AppResource.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppResource.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Folder Include="Data\Mapping\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,4 +21,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.13" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PortalBlazor.Core\PortalBlazor.Core.csproj" />
+  </ItemGroup>
+
 </Project>

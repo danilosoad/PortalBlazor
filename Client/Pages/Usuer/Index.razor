@@ -1,5 +1,5 @@
 ﻿@page "/users"
-@using PortalBlazor.Domain.Entity;
+
 @inject HttpClient http
 
 <h3>Index</h3>
@@ -11,7 +11,7 @@
     </HeaderContent>
     <RowTemplate>
         <MudTd DataLabel="ID">@context.Id</MudTd>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Name">@context.UserName</MudTd>
     </RowTemplate>
 </MudTable>
 
@@ -33,6 +33,6 @@
     }
     private void OnRowClick(TableRowClickEventArgs<User> args)
     {
-        _selectedItemText = $"{args.Item.Name} ({args.Item.Id})";
+        _selectedItemText = $"{args.Item.UserName} ({args.Item.Id})";
     }
 }

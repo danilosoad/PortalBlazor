@@ -1,4 +1,4 @@
-﻿namespace PortalBlazor.Server.Util.Token
+﻿namespace PortalBlazor.Core.Models.Token
 {
     public class UserToken
     {

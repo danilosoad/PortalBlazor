@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PortalBlazor.Domain.Entity;
+using PortalBlazor.Core.Domain.Entity;
 using PortalBlazor.Infra.Data;
 
 namespace PortalBlazor.Server.Controllers

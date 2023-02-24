@@ -1,15 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using PortalBlazor.Core.Enum;
+using PortalBlazor.Core.Models;
 
-//using Microsoft.IdentityModel.Tokens;
 using PortalBlazor.Server.Util.Token;
-using PortalBlazor.Shared.Enum;
-using PortalBlazor.Shared.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-//using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace PortalBlazor.Server.Controllers
@@ -68,13 +66,6 @@ namespace PortalBlazor.Server.Controllers
 
         private async Task<UserToken> GenerateToken(UserInfo model)
         {
-            //var claims = new List<Claim>() {
-            //    new Claim(JwtRegisteredClaimNames.UniqueName, model.Email),
-            //    new Claim(ClaimTypes.Name, model.Email),
-            //    new Claim(ClaimTypes.Role, model.Role),
-            //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            //};
-
             var user = await _sigInManager.UserManager.FindByEmailAsync(model.Email);
             var roles = await _sigInManager.UserManager.GetRolesAsync(user);
             var claims = new List<Claim>();
