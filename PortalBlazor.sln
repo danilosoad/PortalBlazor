@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortalBlazor.Client", "Clie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortalBlazor.Shared", "Shared\PortalBlazor.Shared.csproj", "{5D122F0E-9AFE-4EA1-A18C-D39C7F5B4B80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalBlazor.Core", "PortalBlazor.Core\PortalBlazor.Core.csproj", "{5DAAD90F-4CF4-424D-AE16-449F0B7C076D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortalBlazor.Core", "PortalBlazor.Core\PortalBlazor.Core.csproj", "{5DAAD90F-4CF4-424D-AE16-449F0B7C076D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalBlazor.Infra", "PortalBlazor.Infra\PortalBlazor.Infra.csproj", "{E7B9FDFB-EF15-49F5-917E-8FB5B538649D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortalBlazor.Infra", "PortalBlazor.Infra\PortalBlazor.Infra.csproj", "{E7B9FDFB-EF15-49F5-917E-8FB5B538649D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

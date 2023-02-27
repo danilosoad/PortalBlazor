@@ -56,18 +56,30 @@ namespace PortalBlazor.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserInfo model)
         {
-            var result = await _sigInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
+            try
+            {
+                var result = await _sigInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
 
-            if (result.Succeeded)
-                return Ok(await GenerateToken(model));
-            else
-                return BadRequest(new { message = "invalid credentials" });
+                if (result.Succeeded)
+                    return Ok(await GenerateToken(model));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return BadRequest(new { message = "invalid credentials" });
+
+            //if (result.Succeeded)
+            //    return Ok(await GenerateToken(model));
+            //else
+            //    return BadRequest(new { message = "invalid credentials" });
         }
 
         private async Task<UserToken> GenerateToken(UserInfo model)
         {
             var user = await _sigInManager.UserManager.FindByEmailAsync(model.Email);
             var roles = await _sigInManager.UserManager.GetRolesAsync(user);
+
             var claims = new List<Claim>();
 
             claims.Add(new Claim(ClaimTypes.Name, user.Email));

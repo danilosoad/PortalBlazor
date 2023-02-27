@@ -1,0 +1,41 @@
+﻿@page "/jobjourney"
+@using PortalBlazor.Core.Services.JobJourney;
+@inject IJobJourneyService jobJourneyService
+@inject IDialogService DialogService
+
+<h3>Calcular Jornada de Trabalho</h3>
+<br />
+<MudItem xs="12" sm="6" md="4">
+    <MudTextField @bind-Value="beginJourney" InputType="InputType.Time" Label="Inicio da Jornada" Variant="Variant.Text"></MudTextField>
+    <MudTextField @bind-Value="beginLaunch" InputType="InputType.Time" Label="Saída Almoço" Variant="Variant.Text"></MudTextField>
+    <MudTextField @bind-Value="endLaunch" InputType="InputType.Time" Label="Retorno Almoço" Variant="Variant.Text"></MudTextField>
+    <br />
+    <MudButton @onclick="OpenDialog" Size="Size.Small" Variant="Variant.Filled" Color="Color.Info">
+        Calcular
+    </MudButton>
+</MudItem>
+
+
+@code {
+    public string beginJourney { get; set; }
+    public string beginLaunch { get; set; }
+    public string endLaunch { get; set; }
+
+
+    private DateTime GetEndJourneyTime()
+    {
+        return jobJourneyService.GetHourToLeave(Convert.ToDateTime(beginJourney), Convert.ToDateTime(beginLaunch), Convert.ToDateTime(endLaunch));
+    }
+
+    private void OpenDialog()
+    {
+        var endJourney = GetEndJourneyTime();
+
+        var dialogParams = new DialogParameters();
+        dialogParams.Add("EndJourney", endJourney);
+
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        DialogService.Show<JobDialog>("Fim do Expediente", dialogParams, options);
+    }
+
+}
